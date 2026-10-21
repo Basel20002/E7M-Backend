@@ -14,11 +14,15 @@ const runCompetitionExpiration = async () => {
   isRunning = true;
 
   try {
-    await releaseExpiredCompetitionSlots();
+    if (typeof releaseExpiredCompetitionSlots === "function") {
+      await releaseExpiredCompetitionSlots();
+    } else {
+      console.warn("⚠️ releaseExpiredCompetitionSlots is not defined or exported properly.");
+    }
   } catch (error) {
     console.error(
-      "❌ Competition expiration job error:",
-      error.message
+      "❌ Competition expiration job error details:",
+      error
     );
   } finally {
     isRunning = false;
